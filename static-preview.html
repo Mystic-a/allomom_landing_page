@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlloMom — Every moment of motherhood, understood</title>
+<meta name="description" content="AlloMom is an intelligent maternal wellness companion that helps you understand your body, track your wellbeing, and feel supported through every stage of motherhood.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ DESIGN TOKENS ============ */
+:root{
+  --cream:#FBF6F1; --cream-2:#F6EEE6; --white:#FFFFFF;
+  --ink:#F9DDE6; --ink-soft:#6B5F57; --ink-faint:#9A8D84;
+  --rose:#E86A8A; --rose-deep:#CE4E71; --rose-soft:#FBE4EB; --rose-grad:linear-gradient(135deg,#F19AB2,#E0648A);
+  --peach:#F2B98D; --peach-soft:#FCEBDB;
+  --lav:#B4A0E0; --lav-soft:#EFE9FA;
+  --green:#7FB08A; --green-soft:#E3F0E6;
+  --gold:#E4AC4C; --gold-soft:#FAF0DC;
+  --line:rgba(42,35,32,.08);
+  --shadow-sm:0 4px 16px rgba(42,35,32,.06);
+  --shadow-md:0 14px 40px rgba(42,35,32,.10);
+  --shadow-lg:0 28px 70px rgba(42,35,32,.14);
+  --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --font-display:"Fraunces",Georgia,serif;
+  --font-body:"Inter",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+::selection{background:var(--rose-soft);color:var(--rose-deep)}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:110px 0;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--rose-deep);background:var(--rose-soft);padding:8px 16px;border-radius:100px;margin-bottom:22px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--rose)}
+.eyebrow.lav{color:#7A63B8;background:var(--lav-soft)}
+.eyebrow.lav .dot{background:var(--lav)}
+.eyebrow.green{color:#4E8A5C;background:var(--green-soft)}
+.eyebrow.green .dot{background:var(--green)}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;line-height:1.12;letter-spacing:-.015em}
+.h2{font-size:clamp(34px,4.6vw,54px);margin-bottom:20px}
+.h2 em{font-style:italic;color:var(--rose-deep)}
+.lead{font-size:17px;color:var(--ink-soft);max-width:560px}
+.section-head{max-width:680px;margin-bottom:56px}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-head.center .lead{margin:0 auto}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:15px;font-weight:600;padding:15px 30px;border-radius:100px;transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .3s;white-space:nowrap}
+.btn svg{transition:transform .35s var(--ease)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-primary{background:var(--rose-grad);color:#fff;box-shadow:0 10px 28px rgba(224,100,138,.35)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(224,100,138,.45)}
+.btn-ghost{background:var(--white);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+.btn-ghost:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.btn-dark{background:var(--ink);color:var(--cream)}
+.btn-dark:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(42,35,32,.3)}
+
+/* ============ SCROLL PROGRESS ============ */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--rose-grad);z-index:100;border-radius:0 3px 3px 0}
+
+/* ============ NAVBAR ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:80;transition:background .4s,box-shadow .4s,backdrop-filter .4s}
+.nav.scrolled{background:rgba(251,246,241,.82);backdrop-filter:blur(16px);box-shadow:0 8px 30px rgba(42,35,32,.07)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-family:var(--font-display);font-size:26px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:2px}
+.brand .heart{color:var(--rose);font-size:20px;transform:translateY(-1px)}
+.nav-links{display:flex;align-items:center;gap:34px;list-style:none}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--ink-soft);position:relative;transition:color .3s;padding:6px 0}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--rose);border-radius:2px;transition:width .35s var(--ease)}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.btn-login{background:var(--ink);color:var(--cream);font-size:14px;font-weight:600;padding:11px 26px;border-radius:100px;transition:transform .3s var(--ease),box-shadow .3s,background .3s}
+.btn-login:hover{transform:translateY(-2px);background:var(--rose-deep);box-shadow:0 10px 24px rgba(206,78,113,.35)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px}
+.hamburger span{width:24px;height:2px;background:var(--ink);border-radius:2px;transition:.35s var(--ease)}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{position:fixed;top:64px;left:16px;right:16px;background:var(--white);border-radius:24px;box-shadow:var(--shadow-lg);padding:20px;z-index:79;display:none;flex-direction:column;gap:4px;border:1px solid var(--line)}
+.mobile-menu.open{display:flex;animation:menuIn .4s var(--ease)}
+.mobile-menu a{padding:13px 16px;border-radius:14px;font-weight:500;color:var(--ink-soft);transition:.25s}
+.mobile-menu a:hover{background:var(--cream);color:var(--ink)}
+.mobile-menu .btn-login{text-align:center;margin-top:8px}
+@keyframes menuIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+
+/* ============ HERO ============ */
+.hero{padding:170px 0 100px;position:relative;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none;z-index:0}
+.blob-1{width:520px;height:520px;background:#F8CFDD;top:-160px;right:-120px}
+.blob-2{width:420px;height:420px;background:#F9E3C8;bottom:-140px;left:-140px}
+.blob-3{width:340px;height:340px;background:#DCCFF5;top:34%;left:34%;opacity:.35}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;position:relative;z-index:1}
+.hero-brand{font-size:13px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:26px;display:flex;align-items:center;gap:12px}
+.hero-brand::before{content:"";width:34px;height:1.5px;background:var(--rose-deep)}
+.hero h1{font-size:clamp(44px,5.6vw,72px);margin-bottom:24px}
+.hero h1 em{font-style:italic;color:var(--rose-deep)}
+.hero .lead{margin-bottom:36px;font-size:18px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+.hstat .num{font-family:var(--font-display);font-size:26px;font-weight:600}
+.hstat .lbl{font-size:13px;color:var(--ink-faint)}
+.hero-visual{position:relative}
+.hero-img{border-radius:38px;overflow:hidden;box-shadow:var(--shadow-lg);position:relative;aspect-ratio:.92}
+.hero-img img{width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform 1.2s var(--ease)}
+.hero-visual:hover .hero-img img{transform:scale(1.06)}
+.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(200deg,transparent 55%,rgba(42,35,32,.18));border-radius:38px}
+.glow-ring{position:absolute;inset:-22px;border:1.5px dashed rgba(224,100,138,.35);border-radius:48px;z-index:-1;animation:spinSlow 40s linear infinite}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+.chip{position:absolute;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:18px;box-shadow:var(--shadow-md);padding:12px 16px;display:flex;align-items:center;gap:11px;animation:float 6s ease-in-out infinite;z-index:2}
+.chip .ico{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-size:17px;flex-shrink:0}
+.chip .t{font-size:11px;font-weight:600;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase}
+.chip .v{font-size:14.5px;font-weight:700;line-height:1.25}
+.chip-1{top:6%;left:-7%;animation-delay:0s}
+.chip-1 .ico{background:var(--rose-soft)}
+.chip-2{top:24%;right:-8%;animation-delay:1.2s}
+.chip-2 .ico{background:var(--lav-soft)}
+.chip-3{bottom:26%;left:-11%;animation-delay:2.1s}
+.chip-3 .ico{background:#E3F0FB}
+.chip-4{top:56%;right:-10%;animation-delay:.7s}
+.chip-4 .ico{background:var(--green-soft)}
+.chip-5{bottom:4%;right:6%;animation-delay:1.7s}
+.chip-5 .ico{background:var(--peach-soft)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+
+/* ============ INTRO COMPOSITION ============ */
+.intro{background:var(--white);border-radius:48px;margin:0 16px;padding:110px 0}
+.comp{position:relative;max-width:940px;margin:64px auto 0;display:grid;place-items:center}
+.comp-bg{position:absolute;inset:8% 12%;background:linear-gradient(135deg,var(--rose-soft),var(--peach-soft) 45%,var(--lav-soft));border-radius:60px;filter:blur(2px)}
+.comp-orbit{position:absolute;width:640px;height:640px;max-width:92vw;border:1.5px dashed rgba(42,35,32,.12);border-radius:50%;animation:spinSlow 60s linear infinite}
+.phone{width:280px;background:#17130F;border-radius:44px;padding:11px;box-shadow:var(--shadow-lg);position:relative;z-index:2}
+.phone-screen{border-radius:34px;overflow:hidden;aspect-ratio:9/19;background:#000}
+.phone-screen img{width:100%;height:100%;object-fit:cover;object-position:top}
+.comp-tag{position:absolute;background:var(--white);border-radius:18px;box-shadow:var(--shadow-md);padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;z-index:3;animation:float 7s ease-in-out infinite}
+.comp-tag .ico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px}
+.tag-1{top:4%;left:6%;animation-delay:.3s}.tag-1 .ico{background:var(--rose-soft)}
+.tag-2{top:16%;right:2%;animation-delay:1.4s}.tag-2 .ico{background:var(--lav-soft)}
+.tag-3{bottom:20%;left:0;animation-delay:2s}.tag-3 .ico{background:var(--green-soft)}
+.tag-4{bottom:6%;right:10%;animation-delay:.9s}.tag-4 .ico{background:var(--peach-soft)}
+.tag-5{top:52%;left:-4%;animation-delay:1.8s}.tag-5 .ico{background:#E3F0FB}
+.intro-pillars{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:70px}
+.pillar{display:flex;align-items:center;gap:9px;background:var(--cream);border:1px solid var(--line);border-radius:100px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--ink-soft)}
+.pillar .dot{width:8px;height:8px;border-radius:50%}
+
+/* ============ WELLNESS CARDS ============ */
+.wellness-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.wcard{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;box-shadow:var(--shadow-sm);transition:transform .45s var(--ease),box-shadow .45s var(--ease);position:relative;overflow:hidden}
+.wcard:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.wcard::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent, var(--rose-grad));opacity:0;transition:opacity .4s}
+.wcard:hover::before{opacity:1}
+.wcard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.wcard-ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:24px}
+.wcard-val{font-family:var(--font-display);font-size:30px;font-weight:600;line-height:1}
+.wcard-val small{font-size:14px;font-family:var(--font-body);font-weight:500;color:var(--ink-faint)}
+.wcard h3{font-size:20px;margin-bottom:6px;font-family:var(--font-body);font-weight:700;letter-spacing:0}
+.wcard p{font-size:14px;color:var(--ink-soft);margin-bottom:20px}
+.spark{width:100%;height:44px}
+.spark polyline{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.wcard-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:12.5px;color:var(--ink-faint)}
+.trend-up{color:#4E8A5C;font-weight:600}
+.mini-bar{height:6px;border-radius:6px;background:var(--cream-2);overflow:hidden;flex:1;margin:0 12px}
+.mini-bar i{display:block;height:100%;border-radius:6px;background:var(--accent,var(--rose));width:0;transition:width 1.4s var(--ease)}
+.in .mini-bar i{width:var(--w)}
+
+/* ============ PREGNANCY TIMELINE ============ */
+.pregnancy{background:linear-gradient(180deg,var(--cream) 0%,#FDF1EC 50%,var(--cream) 100%)}
+.progress-card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:36px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;margin-bottom:64px;border:1px solid var(--line)}
+.pc-week{text-align:center;padding-right:40px;border-right:1px solid var(--line)}
+.pc-week .big{font-family:var(--font-display);font-size:64px;font-weight:600;line-height:1;background:var(--rose-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.pc-week .sub{font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-top:8px}
+.pc-rings{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ring-wrap{display:flex;align-items:center;gap:16px}
+.ring{position:relative;width:88px;height:88px;flex-shrink:0}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:8;stroke-linecap:round}
+.ring .bgc{stroke:var(--cream-2)}
+.ring .fgc{stroke:var(--rc,var(--rose));stroke-dasharray:239.4;stroke-dashoffset:239.4}
+.in .fgc{animation:ringFill 1.8s var(--ease) forwards}
+@keyframes ringFill{to{stroke-dashoffset:calc(239.4 - 239.4*var(--p)/100)}}
+.ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-weight:700;font-size:17px}
+.ring-info .t{font-size:12px;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em}
+.ring-info .v{font-size:16px;font-weight:700}
+.ring-info .s{font-size:12.5px;color:var(--ink-faint)}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.tl-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;transition:transform .4s var(--ease),box-shadow .4s;position:relative}
+.tl-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.tl-week{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--rose-deep);background:var(--rose-soft);padding:6px 13px;border-radius:100px;margin-bottom:16px}
+.tl-card.birth .tl-week{color:#4E8A5C;background:var(--green-soft)}
+.tl-card h3{font-size:18px;margin-bottom:4px;font-family:var(--font-body);font-weight:700}
+.tl-size{font-size:13px;color:var(--rose-deep);font-weight:600;margin-bottom:10px}
+.tl-card p{font-size:13.5px;color:var(--ink-soft)}
+.tl-card .track{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.tl-card .track span{font-size:11px;font-weight:600;background:var(--cream);border:1px solid var(--line);padding:4px 10px;border-radius:100px;color:var(--ink-faint)}
+.tl-card.birth{grid-column:span 1;overflow:hidden;padding:0}
+.tl-birth-img{height:130px;overflow:hidden}
+.tl-birth-img img{width:100%;height:100%;object-fit:cover}
+.tl-birth-body{padding:20px 24px 24px}
+
+/* ============ AI / ALLOBOT ============ */
+.ai-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.insight-list{display:flex;flex-direction:column;gap:14px}
+.insight{display:flex;gap:16px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:18px 22px;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s}
+.insight:hover{transform:translateX(8px);box-shadow:var(--shadow-md)}
+.insight .ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:19px;flex-shrink:0}
+.insight .t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);margin-bottom:2px}
+.insight .v{font-size:15px;font-weight:600}
+.insight .d{font-size:13px;color:var(--ink-soft)}
+.ai-visual{position:relative;display:grid;place-items:center}
+.ai-visual .phone{width:264px}
+.ai-halo{position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,var(--lav-soft),transparent 65%);z-index:0}
+.disclaimer{display:flex;gap:12px;align-items:flex-start;background:var(--gold-soft);border:1px solid #F0DFB8;border-radius:var(--r-md);padding:16px 20px;font-size:13px;color:#8A6B1F;margin-top:28px;line-height:1.55}
+.disclaimer .ico{font-size:18px}
+
+/* ============ ALLOWEAR ============ */
+.allowear{background:var(--ink);color:var(--cream);border-radius:48px;margin:0 16px;overflow:hidden}
+.allowear .eyebrow{background:rgba(255,255,255,.1);color:#F3B7C8}
+.allowear .lead{color:rgba(251,246,241,.72)}
+.allowear .h2 em{color:#F19AB2}
+.aw-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:center}
+.aw-features{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:34px}
+.aw-feat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-md);padding:18px 20px;backdrop-filter:blur(6px);transition:background .3s,transform .35s var(--ease)}
+.aw-feat:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
+.aw-feat .t{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#F19AB2;margin-bottom:5px}
+.aw-feat .d{font-size:13.5px;color:rgba(251,246,241,.7)}
+.aw-stage{position:relative;display:grid;place-items:center;min-height:520px}
+.aw-link{position:absolute;width:120px;z-index:1}
+.aw-link path{fill:none;stroke:rgba(241,154,178,.65);stroke-width:2;stroke-dasharray:5 7;animation:dashMove 1.4s linear infinite}
+@keyframes dashMove{to{stroke-dashoffset:-24}}
+.watch{width:150px;background:#211B17;border:2px solid rgba(255,255,255,.14);border-radius:38px;padding:14px 10px;box-shadow:0 20px 50px rgba(0,0,0,.45);position:relative;z-index:2}
+.watch::before,.watch::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:66px;height:52px;background:#2B231E;border-radius:14px;z-index:-1}
+.watch::before{top:-50px}.watch::after{bottom:-50px}
+.watch-face{background:radial-gradient(circle at 30% 20%,#3A2F28,#211B17);border-radius:26px;padding:18px 10px;text-align:center}
+.watch-face .hr{font-family:var(--font-display);font-size:34px;font-weight:600;color:#F19AB2;line-height:1}
+.watch-face .lb{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(251,246,241,.55);margin-top:6px}
+.watch-face .beat{display:inline-block;width:8px;height:8px;background:var(--rose);border-radius:50%;margin-bottom:8px;animation:beat 1.1s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.55}}
+.aw-phone-wrap{position:relative;z-index:2;margin-left:70px}
+.aw-phone-wrap .phone{width:236px}
+.aw-metric-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:40px}
+.aw-metric{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px 20px;text-align:center;min-width:104px}
+.aw-metric .v{font-family:var(--font-display);font-size:21px;font-weight:600}
+.aw-metric .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,246,241,.55)}
+
+/* ============ DAILY DASHBOARD ============ */
+.dash{background:var(--white);border-radius:48px;margin:0 16px;padding:110px 0}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.dcard{background:var(--cream);border:1px solid var(--line);border-radius:var(--r-md);padding:22px;transition:transform .4s var(--ease),box-shadow .4s}
+.dcard:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.dcard .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.dcard .ico{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:19px}
+.dcard .lbl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.dcard .val{font-family:var(--font-display);font-size:29px;font-weight:600;line-height:1.1}
+.dcard .val small{font-size:14px;font-family:var(--font-body);color:var(--ink-faint);font-weight:500}
+.dcard .sub{font-size:12.5px;color:var(--ink-faint);margin-top:4px}
+.dcard.wide{grid-column:span 2;grid-row:span 2}
+.dcard.tall{grid-row:span 2}
+.bars{display:flex;align-items:flex-end;gap:9px;height:150px;margin-top:20px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar i{width:100%;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--rose),#F3B7C8);height:var(--h);transform:scaleY(0);transform-origin:bottom;transition:transform 1s var(--ease)}
+.in .bar i{transform:scaleY(1)}
+.bar.today i{background:linear-gradient(180deg,var(--ink),#5C534B)}
+.bar .d{font-size:11px;color:var(--ink-faint);font-weight:600}
+.dash-note{margin-top:34px;text-align:center;font-size:13px;color:var(--ink-faint)}
+
+/* ============ CHAT ============ */
+.chat-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+.q-list{display:flex;flex-direction:column;gap:12px;margin-top:30px}
+.q-item{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:15px 18px;font-size:14.5px;font-weight:500;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;text-align:left;width:100%}
+.q-item:hover{transform:translateX(8px);box-shadow:var(--shadow-md);border-color:#F3C3D2}
+.q-item .arrow{margin-left:auto;color:var(--rose);opacity:0;transition:opacity .3s,transform .3s}
+.q-item:hover .arrow{opacity:1;transform:translateX(3px)}
+.chat-window{background:var(--white);border-radius:32px;box-shadow:var(--shadow-lg);border:1px solid var(--line);overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:14px;padding:20px 26px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,var(--rose-soft),#FDF4EE)}
+.chat-avatar{width:46px;height:46px;border-radius:50%;background:var(--rose-grad);display:grid;place-items:center;font-size:21px;position:relative}
+.chat-avatar::after{content:"";position:absolute;bottom:0;right:0;width:12px;height:12px;background:var(--green);border:2.5px solid var(--white);border-radius:50%}
+.chat-head .n{font-weight:700;font-size:16px}
+.chat-head .s{font-size:12.5px;color:#4E8A5C;font-weight:600}
+.chat-body{padding:26px;height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg,#FDF8F4,var(--white))}
+.msg{max-width:82%;padding:14px 18px;border-radius:20px;font-size:14px;line-height:1.6;animation:msgIn .5s var(--ease)}
+@keyframes msgIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.msg.user{align-self:flex-end;background:var(--rose-grad);color:#fff;border-bottom-right-radius:6px}
+.msg.ai{align-self:flex-start;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow-sm);border-bottom-left-radius:6px}
+.msg.typing{display:flex;gap:5px;align-items:center;padding:18px}
+.msg.typing i{width:7px;height:7px;border-radius:50%;background:var(--rose);animation:tdot 1.2s infinite}
+.msg.typing i:nth-child(2){animation-delay:.18s}.msg.typing i:nth-child(3){animation-delay:.36s}
+@keyframes tdot{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-5px);opacity:1}}
+.chat-input{display:flex;gap:12px;padding:16px 20px;border-top:1px solid var(--line)}
+.chat-input input{flex:1;border:1.5px solid var(--line);border-radius:100px;padding:13px 22px;font-family:inherit;font-size:14px;outline:none;transition:border-color .3s;background:var(--cream)}
+.chat-input input:focus{border-color:var(--rose)}
+.chat-send{width:48px;height:48px;border-radius:50%;background:var(--rose-grad);color:#fff;display:grid;place-items:center;transition:transform .3s var(--ease);flex-shrink:0}
+.chat-send:hover{transform:scale(1.1)}
+
+/* ============ EMOTIONAL ============ */
+.emo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.ecard{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 24px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .45s var(--ease),box-shadow .45s}
+.ecard:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.ecard .ico{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;font-size:26px;margin:0 auto 18px;transition:transform .45s var(--ease)}
+.ecard:hover .ico{transform:scale(1.12) rotate(-4deg)}
+.ecard h3{font-size:17px;font-family:var(--font-body);font-weight:700;margin-bottom:8px}
+.ecard p{font-size:13.5px;color:var(--ink-soft)}
+.breath{margin-top:44px;background:linear-gradient(135deg,var(--lav-soft),var(--rose-soft));border-radius:var(--r-lg);padding:44px;display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.breath-circle{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff,var(--lav));box-shadow:0 14px 40px rgba(180,160,224,.5);flex-shrink:0;animation:breathe 8s ease-in-out infinite;display:grid;place-items:center;font-family:var(--font-display);font-size:15px;color:#6A54A8;font-weight:600}
+@keyframes breathe{0%,100%{transform:scale(.82)}50%{transform:scale(1.08)}}
+.breath .bt h3{font-size:24px;margin-bottom:8px}
+.breath .bt p{font-size:14.5px;color:var(--ink-soft);max-width:520px}
+
+/* ============ PARTNER ============ */
+.partner-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.partner-visual{position:relative}
+.partner-visual>img{border-radius:36px;box-shadow:var(--shadow-lg);aspect-ratio:1.08;object-fit:cover;width:100%}
+.pv-chip{position:absolute;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-radius:16px;box-shadow:var(--shadow-md);padding:11px 16px;font-size:13px;font-weight:600;display:flex;gap:9px;align-items:center;animation:float 6.5s ease-in-out infinite}
+.pv-chip-1{top:7%;right:-5%}
+.pv-chip-2{bottom:9%;left:-6%;animation-delay:1.5s}
+.pv-phones{display:flex;justify-content:center;gap:0;margin-top:-30px;position:relative;z-index:2}
+.pv-phones .phone{width:190px}
+.pv-phones .phone:first-child{transform:rotate(-7deg) translateX(26px);z-index:2}
+.pv-phones .phone:last-child{transform:rotate(6deg) translateX(-26px) translateY(24px)}
+.feat-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:30px 0}
+.feat-item{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;font-weight:500}
+.feat-item .ck{width:22px;height:22px;border-radius:50%;background:var(--green-soft);color:#4E8A5C;display:grid;place-items:center;font-size:11px;flex-shrink:0;margin-top:2px}
+.privacy-note{background:var(--lav-soft);border-radius:var(--r-md);padding:16px 20px;font-size:13.5px;color:#6A54A8;display:flex;gap:12px;align-items:flex-start;line-height:1.55}
+
+/* ============ RECORDS ============ */
+.records{background:var(--white);border-radius:48px;margin:0 16px;padding:110px 0}
+.rec-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:60px;align-items:start}
+.rec-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:34px}
+.rec-stat{background:var(--cream);border:1px solid var(--line);border-radius:var(--r-md);padding:22px}
+.rec-stat .v{font-family:var(--font-display);font-size:30px;font-weight:600}
+.rec-stat .l{font-size:13px;color:var(--ink-faint)}
+.timeline-ui{position:relative;padding-left:34px}
+.timeline-ui::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--rose),var(--lav),var(--peach));border-radius:2px}
+.rec-item{position:relative;background:var(--cream);border:1px solid var(--line);border-radius:var(--r-md);padding:20px 24px;margin-bottom:16px;transition:transform .35s var(--ease),box-shadow .35s}
+.rec-item:hover{transform:translateX(8px);box-shadow:var(--shadow-sm)}
+.rec-item::before{content:"";position:absolute;left:-31px;top:26px;width:14px;height:14px;border-radius:50%;background:var(--dc,var(--rose));border:3px solid var(--white);box-shadow:0 0 0 2px var(--dc,var(--rose))}
+.rec-item .d{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dc,var(--rose));margin-bottom:4px}
+.rec-item .t{font-weight:700;font-size:15.5px;margin-bottom:3px}
+.rec-item .s{font-size:13.5px;color:var(--ink-soft)}
+
+/* ============ INSIGHTS ============ */
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.big-card{border-radius:34px;padding:44px;position:relative;overflow:hidden;transition:transform .45s var(--ease),box-shadow .45s;min-height:250px;display:flex;flex-direction:column;justify-content:flex-end}
+.big-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+.big-card .glow{position:absolute;width:260px;height:260px;border-radius:50%;filter:blur(60px);opacity:.6;top:-70px;right:-70px;transition:transform .6s var(--ease)}
+.big-card:hover .glow{transform:scale(1.35)}
+.big-card .ico{position:absolute;top:34px;left:40px;width:58px;height:58px;border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(6px);display:grid;place-items:center;font-size:25px;box-shadow:var(--shadow-sm)}
+.big-card h3{font-size:15px;font-family:var(--font-body);font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.big-card p{font-size:15.5px;max-width:380px;line-height:1.6}
+.bc-1{background:linear-gradient(135deg,#FBE4EB,#FDF2EE);color:var(--ink)}
+.bc-1 .glow{background:#F3B7C8}
+.bc-2{background:linear-gradient(135deg,#EFE9FA,#F8F4FE);color:var(--ink)}
+.bc-2 .glow{background:#C9B6EE}
+.bc-3{background:linear-gradient(135deg,#E3F0E6,#F3FAF4);color:var(--ink)}
+.bc-3 .glow{background:#A9D3B2}
+.bc-4{background:linear-gradient(135deg,#FCEBDB,#FDF6EE);color:var(--ink)}
+.bc-4 .glow{background:#F4CDA3}
+
+/* ============ PRIVACY ============ */
+.privacy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pcard{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:40px 34px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .45s var(--ease),box-shadow .45s}
+.pcard:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.pcard .pico{width:76px;height:76px;border-radius:24px;display:grid;place-items:center;font-size:32px;margin:0 auto 22px}
+.pcard h3{font-size:22px;margin-bottom:10px}
+.pcard p{font-size:14.5px;color:var(--ink-soft)}
+
+/* ============ CTA ============ */
+.cta-panel{background:linear-gradient(135deg,#F9DFE7,#FCEBDB 45%,#f9dfe7);border-radius:52px;margin:0 16px;padding:100px 60px;position:relative;overflow:hidden}
+.cta-inner{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center;position:relative;z-index:1}
+.cta-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.7}
+.cta-blob-1{width:400px;height:400px;background:#F3B7C8;top:-120px;left:-100px}
+.cta-blob-2{width:360px;height:360px;background:#C9B6EE;bottom:-140px;right:8%}
+.cta-inner h2{font-size:clamp(36px,4.5vw,58px);margin-bottom:18px}
+.cta-inner h2 em{font-style:italic;color:var(--rose-deep)}
+.cta-inner .lead{margin-bottom:36px}
+.cta-visual{display:grid;place-items:center;position:relative}
+.cta-visual .phone{width:250px;transform:rotate(4deg)}
+.cta-ring{position:absolute;width:400px;height:400px;border:1.5px dashed rgba(206,78,113,.3);border-radius:50%;animation:spinSlow 34s linear infinite}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink);color:rgba(251,246,241,.75);margin-top:110px;border-radius:48px 48px 0 0}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr;gap:48px;padding:80px 0 56px}
+.foot-brand{font-family:var(--font-display);font-size:30px;color:var(--cream);font-weight:600;margin-bottom:14px}
+.foot-brand .heart{color:var(--rose)}
+.foot-desc{font-size:14px;line-height:1.7;max-width:300px}
+.foot-col h4{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(251,246,241,.45);margin-bottom:20px}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.foot-col a{font-size:14.5px;transition:color .3s,padding-left .3s}
+.foot-col a:hover{color:#F19AB2;padding-left:5px}
+.newsletter h4{font-family:var(--font-display);font-size:22px;color:var(--cream);font-weight:500;letter-spacing:0;text-transform:none;margin-bottom:10px}
+.newsletter p{font-size:13.5px;margin-bottom:20px}
+.nl-form{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:100px;padding:5px;transition:border-color .3s}
+.nl-form:focus-within{border-color:#F19AB2}
+.nl-form input{flex:1;background:none;border:none;outline:none;color:var(--cream);font-family:inherit;font-size:14px;padding:10px 18px;min-width:0}
+.nl-form input::placeholder{color:rgba(251,246,241,.4)}
+.nl-form button{background:var(--rose-grad);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:12px 24px;border-radius:100px;transition:transform .3s var(--ease)}
+.nl-form button:hover{transform:scale(1.05)}
+.nl-msg{font-size:13px;color:#A9D3B2;margin-top:12px;min-height:20px}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:rgba(251,246,241,.45)}
+.foot-bottom .heart{color:var(--rose)}
+
+/* ============ LOGIN MODAL ============ */
+.modal-bg{position:fixed;inset:0;background:rgba(42,35,32,.5);backdrop-filter:blur(8px);z-index:200;display:none;place-items:center;padding:20px}
+.modal-bg.open{display:grid;animation:fadeIn .35s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--white);border-radius:32px;padding:44px;width:100%;max-width:420px;box-shadow:var(--shadow-lg);animation:modalIn .5s var(--ease);position:relative}
+@keyframes modalIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+.modal .close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;background:var(--cream);display:grid;place-items:center;font-size:15px;transition:background .3s,transform .3s}
+.modal .close:hover{background:var(--rose-soft);transform:rotate(90deg)}
+.modal h3{font-size:27px;margin-bottom:6px}
+.modal .sub{font-size:14px;color:var(--ink-soft);margin-bottom:28px}
+.modal label{display:block;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 7px 4px}
+.modal input{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:13px 18px;font-family:inherit;font-size:14.5px;outline:none;transition:border-color .3s;margin-bottom:18px;background:var(--cream)}
+.modal input:focus{border-color:var(--rose)}
+.modal .btn{width:100%;margin-top:6px}
+.modal .alt{text-align:center;font-size:13px;color:var(--ink-faint);margin-top:18px}
+.modal .alt a{color:var(--rose-deep);font-weight:600}
+
+/* ============ REVEAL ============ */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}.d6{transition-delay:.48s}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1080px){
+  .wellness-grid{grid-template-columns:repeat(2,1fr)}
+  .timeline{grid-template-columns:repeat(2,1fr)}
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+  .emo-grid{grid-template-columns:repeat(3,1fr)}
+  .chip-1{left:-2%}.chip-3{left:-3%}.chip-2{right:-3%}.chip-4{right:-3%}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:920px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav .btn-login{display:none}
+  .hero{padding-top:130px}
+  .hero-grid,.ai-grid,.aw-grid,.chat-grid,.partner-grid,.rec-grid,.cta-inner{grid-template-columns:1fr;gap:52px}
+  .hero-visual{max-width:480px;margin:0 auto}
+  .progress-card{grid-template-columns:1fr}
+  .pc-week{border-right:none;border-bottom:1px solid var(--line);padding:0 0 26px}
+  .pc-rings{grid-template-columns:1fr;gap:20px}
+  .insight-grid{grid-template-columns:1fr}
+  .aw-stage{min-height:0;padding:30px 0}
+  .cta-panel{padding:70px 28px}
+  .section{padding:80px 0}
+}
+@media(max-width:600px){
+  .wellness-grid,.timeline,.dash-grid,.emo-grid,.privacy-grid,.aw-features,.feat-cols,.rec-stats{grid-template-columns:1fr}
+  .dcard.wide{grid-column:span 1}
+  .foot-grid{grid-template-columns:1fr}
+  .chip{padding:9px 12px}.chip .ico{width:30px;height:30px;font-size:14px}
+  .chip-5{display:none}
+  .comp-tag{font-size:12px;padding:10px 13px}
+  .tag-5{display:none}
+  .breach{gap:20px}
+  .pv-phones .phone{width:150px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand">AlloMom<span class="heart">&#10084;</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#ai-care">AI Care</a></li>
+      <li><a href="#allowear">AlloWear</a></li>
+      <li><a href="#families">For Families</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <div class="nav-cta">
+      <button class="btn-login" onclick="openModal()">Log in</button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features">Features</a>
+  <a href="#ai-care">AI Care</a>
+  <a href="#allowear">AlloWear</a>
+  <a href="#families">For Families</a>
+  <a href="#about">About</a>
+  <button class="btn-login" onclick="openModal()">Log in</button>
+</div>
+
+<!-- ============ 1. HERO ============ -->
+<header class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="hero-brand reveal">AlloMom</div>
+      <h1 class="reveal d1">Every moment of motherhood, <em>understood.</em></h1>
+      <p class="lead reveal d2">An intelligent maternal wellness companion designed to help you understand your body, track your wellbeing, and feel supported through every stage of your journey.</p>
+      <div class="hero-actions reveal d3">
+        <a href="#features" class="btn btn-primary">Explore AlloMom
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#download" class="btn btn-ghost">Download App</a>
+      </div>
+      <div class="hero-stats reveal d4">
+        <div class="hstat"><div class="num" data-count="5000" data-suffix="+">0</div><div class="lbl">Mothers supported</div></div>
+        <div class="hstat"><div class="num" data-count="4.9" data-decimal="1">0</div><div class="lbl">Average rating</div></div>
+        <div class="hstat"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Private by design</div></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal d2">
+      <div class="glow-ring"></div>
+      <div class="hero-img">
+        <img src="assets/hero-mother.png" alt="Expecting mother following her baby's development in the AlloMom app">
+      </div>
+      <div class="chip chip-1"><div class="ico">&#10084;&#65039;</div><div><div class="t">Heart Rate</div><div class="v">82 bpm</div></div></div>
+      <div class="chip chip-2"><div class="ico">&#128164;</div><div><div class="t">Sleep</div><div class="v">7h 30m</div></div></div>
+      <div class="chip chip-3"><div class="ico">&#128167;</div><div><div class="t">Hydration</div><div class="v">82%</div></div></div>
+      <div class="chip chip-4"><div class="ico">&#129496;</div><div><div class="t">Stress</div><div class="v">Low</div></div></div>
+      <div class="chip chip-5"><div class="ico">&#128118;</div><div><div class="t">Baby Growth</div><div class="v">On Track</div></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 2. INTRODUCTION ============ -->
+<section class="intro" id="about">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span>Why AlloMom</div>
+      <h2 class="h2">More than tracking.<br><em>Care that grows with you.</em></h2>
+      <p class="lead">AlloMom brings your health, wellbeing, pregnancy journey, and everyday routines together in one intelligent companion &mdash; helping you understand how you&rsquo;re doing and supporting you through every stage of motherhood.</p>
+    </div>
+    <div class="comp reveal d2">
+      <div class="comp-bg"></div>
+      <div class="comp-orbit"></div>
+      <div class="phone">
+        <div class="phone-screen"><img src="assets/app-home.png" alt="AlloMom app home screen with daily greeting and quick actions"></div>
+      </div>
+      <div class="comp-tag tag-1"><span class="ico">&#128105;</span>Mother profile</div>
+      <div class="comp-tag tag-2"><span class="ico">&#128140;</span>Health metrics</div>
+      <div class="comp-tag tag-3"><span class="ico">&#128198;</span>Pregnancy timeline</div>
+      <div class="comp-tag tag-4"><span class="ico">&#128118;</span>Baby development</div>
+      <div class="comp-tag tag-5"><span class="ico">&#128161;</span>Wellness insights</div>
+    </div>
+    <div class="intro-pillars reveal d3">
+      <div class="pillar"><span class="dot" style="background:var(--rose)"></span>Emotional bonding</div>
+      <div class="pillar"><span class="dot" style="background:var(--lav)"></span>AI care intelligence</div>
+      <div class="pillar"><span class="dot" style="background:var(--green)"></span>Trusted guidance</div>
+      <div class="pillar"><span class="dot" style="background:var(--peach)"></span>Wearable connected</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. MATERNAL WELLNESS ============ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span>Maternal Wellness</div>
+      <h2 class="h2">Understand your body.<br><em>Care for yourself.</em></h2>
+      <p class="lead">AlloMom gathers the wellness signals that matter most to mothers in one calm, clear place &mdash; so you can see how you&rsquo;re doing at a glance, every single day.</p>
+    </div>
+    <div class="wellness-grid">
+      <div class="wcard reveal" style="--accent:linear-gradient(135deg,#F19AB2,#E0648A)">
+        <div class="wcard-top"><div class="wcard-ico" style="background:var(--rose-soft)">&#128095;</div><div class="wcard-val">6,842</div></div>
+        <h3>Movement</h3>
+        <p>Steps, activity, calories, and gentle daily movement goals that adapt to your stage.</p>
+        <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="0,34 25,30 50,32 75,22 100,26 125,16 150,20 175,10 200,14" stroke="#E0648A"/></svg>
+        <div class="wcard-foot"><span>Goal 68%</span><div class="mini-bar"><i style="--w:68%"></i></div><span class="trend-up">&#8593; 8%</span></div>
+      </div>
+      <div class="wcard reveal d1" style="--accent:linear-gradient(135deg,#B4A0E0,#8F76C9)">
+        <div class="wcard-top"><div class="wcard-ico" style="background:var(--lav-soft)">&#128164;</div><div class="wcard-val">7h 30m</div></div>
+        <h3>Sleep</h3>
+        <p>Sleep duration, quality, and recovery &mdash; so you know when to rest a little more.</p>
+        <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="0,30 25,26 50,28 75,18 100,24 125,12 150,16 175,8 200,12" stroke="#8F76C9"/></svg>
+        <div class="wcard-foot"><span>Deep 1h 50m</span><div class="mini-bar"><i style="--w:78%;background:#8F76C9"></i></div><span class="trend-up">&#8593; 42m</span></div>
+      </div>
+      <div class="wcard reveal d2" style="--accent:linear-gradient(135deg,#E86A8A,#CE4E71)">
+        <div class="wcard-top"><div class="wcard-ico" style="background:#FBE4EB">&#10084;&#65039;</div><div class="wcard-val">82 <small>bpm</small></div></div>
+        <h3>Heart &amp; Vital Signs</h3>
+        <p>Resting heart rate and available wellness measurements, tracked with gentle context.</p>
+        <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="0,22 20,22 30,10 40,36 50,18 70,22 90,22 100,8 110,34 120,20 140,22 160,22 170,12 180,30 200,22" stroke="#CE4E71"/></svg>
+        <div class="wcard-foot"><span>Resting</span><div class="mini-bar"><i style="--w:84%;background:#CE4E71"></i></div><span class="trend-up">Stable</span></div>
+      </div>
+      <div class="wcard reveal" style="--accent:linear-gradient(135deg,#7FB08A,#4E8A5C)">
+        <div class="wcard-top"><div class="wcard-ico" style="background:var(--green-soft)">&#129496;</div><div class="wcard-val">Low</div></div>
+        <h3>Stress &amp; Recovery</h3>
+        <p>Understand stress patterns and see how well your body is recovering, day by day.</p>
+        <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="0,14 25,18 50,12 75,26 100,20 125,30 150,24 175,32 200,28" stroke="#4E8A5C"/></svg>
+        <div class="wcard-foot"><span>Recovery 85%</span><div class="mini-bar"><i style="--w:85%;background:#4E8A5C"></i></div><span class="trend-up">&#8593; 11%</span></div>
+      </div>
+      <div class="wcard reveal d1" style="--accent:linear-gradient(135deg,#6BB3D9,#3E8FBF)">
+        <div class="wcard-top"><div class="wcard-ico" style="background:#E3F0FB">&#128167;</div><div class="wcard-val">1.8 <small>/ 2.2 L</small></div></div>
+        <h3>Hydration</h3>
+        <p>Track daily water intake and build gentle hydration habits that stick.</p>
+        <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="0,32 25,28 50,30 75,20 100,24 125,14 150,22 175,12 200,16" stroke="#3E8FBF"/></svg>
+        <div class="wcard-foot"><span>82% of goal</span><div class="mini-bar"><i style="--w:82%;background:#3E8FBF"></i></div><span class="trend-up">On track</span></div>
+      </div>
+      <div class="wcard reveal d2" style="--accent:linear-gradient(135deg,#F2B98D,#DE8F4E)">
+        <div class="wcard-top"><div class="wcard-ico" style="background:var(--peach-soft)">&#129382;</div><div class="wcard-val">Good</div></div>
+        <h3>Nutrition</h3>
+        <p>Log meals and understand daily nutrition patterns with simple, kind summaries.</p>
+        <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline points="0,26 25,22 50,24 75,16 100,20 125,14 150,18 175,10 200,14" stroke="#DE8F4E"/></svg>
+        <div class="wcard-foot"><span>Protein on track</span><div class="mini-bar"><i style="--w:74%;background:#DE8F4E"></i></div><span class="trend-up">Balanced</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. PREGNANCY JOURNEY ============ -->
+<section class="section pregnancy">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow lav"><span class="dot"></span>Your Pregnancy Journey</div>
+      <h2 class="h2">Every week. Every change.<br><em>Every moment.</em></h2>
+      <p class="lead">A living timeline of your baby&rsquo;s growth and your own changing body &mdash; with the information that matters most at each stage.</p>
+    </div>
+    <div class="progress-card reveal d1">
+      <div class="pc-week">
+        <div class="big">24</div>
+        <div class="sub">Weeks along</div>
+      </div>
+      <div class="pc-rings">
+        <div class="ring-wrap">
+          <div class="ring" style="--rc:#E0648A;--p:92"><svg viewBox="0 0 88 88"><circle class="bgc" cx="44" cy="44" r="38"/><circle class="fgc" cx="44" cy="44" r="38"/></svg><div class="pct">92</div></div>
+          <div class="ring-info"><div class="t">Baby Growth</div><div class="v">On Track</div><div class="s">Size of a papaya this week</div></div>
+        </div>
+        <div class="ring-wrap">
+          <div class="ring" style="--rc:#8F76C9;--p:78"><svg viewBox="0 0 88 88"><circle class="bgc" cx="44" cy="44" r="38"/><circle class="fgc" cx="44" cy="44" r="38"/></svg><div class="pct">78</div></div>
+          <div class="ring-info"><div class="t">Mom&rsquo;s Wellness</div><div class="v">Good</div><div class="s">Sleep and stress in a healthy range</div></div>
+        </div>
+        <div class="ring-wrap">
+          <div class="ring" style="--rc:#4E8A5C;--p:64"><svg viewBox="0 0 88 88"><circle class="bgc" cx="44" cy="44" r="38"/><circle class="fgc" cx="44" cy="44" r="38"/></svg><div class="pct">64</div></div>
+          <div class="ring-info"><div class="t">Energy</div><div class="v">Improving</div><div class="s">Up for the third day in a row</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-card reveal"><div class="tl-week">Week 12</div><h3>First trimester, settling in</h3><div class="tl-size">Baby is the size of a lime</div><p>Morning sickness begins to ease. Your first ultrasound is done &mdash; AlloMom logs the milestone and starts your timeline.</p><div class="track"><span>Baby growth</span><span>Maternal changes</span></div></div>
+      <div class="tl-card reveal d1"><div class="tl-week">Week 16</div><h3>The first little flutters</h3><div class="tl-size">Baby is the size of an avocado</div><p>Tiny kicks may begin. Energy often returns &mdash; movement goals gently adjust to your new rhythm.</p><div class="track"><span>Kick notes</span><span>Energy</span></div></div>
+      <div class="tl-card reveal d2"><div class="tl-week">Week 20</div><h3>Halfway there</h3><div class="tl-size">Baby is the size of a banana</div><p>The anatomy scan week. AlloMom helps you prepare questions and stores the report in your health records.</p><div class="track"><span>Appointments</span><span>Reports</span></div></div>
+      <div class="tl-card reveal d3"><div class="tl-week">Week 24</div><h3>Growing together</h3><div class="tl-size">Baby is the size of a papaya</div><p>Glucose screening is ahead. Hydration and nutrition insights stay close by, and sleep guidance adapts.</p><div class="track"><span>Nutrition</span><span>Sleep</span><span>Insights</span></div></div>
+      <div class="tl-card reveal"><div class="tl-week">Week 28</div><h3>Hello, third trimester</h3><div class="tl-size">Baby is the size of an eggplant</div><p>Kick counting begins in earnest. AlloMom reminds you gently and keeps every session in your timeline.</p><div class="track"><span>Kick counter</span><span>Wellness tracking</span></div></div>
+      <div class="tl-card reveal d1"><div class="tl-week">Week 32</div><h3>Nesting and resting</h3><div class="tl-size">Baby is the size of a coconut</div><p>Baby gains weight quickly now. Recovery insights help you balance activity with the rest you need.</p><div class="track"><span>Recovery</span><span>Stress</span></div></div>
+      <div class="tl-card reveal d2"><div class="tl-week">Week 36</div><h3>Almost ready</h3><div class="tl-size">Baby is the size of a romaine heart</div><p>Checkups become weekly. AlloMom helps you track them and keeps your hospital bag list close at hand.</p><div class="track"><span>Appointments</span><span>Personalized insights</span></div></div>
+      <div class="tl-card birth reveal d3">
+        <div class="tl-birth-img"><img src="assets/newborn.png" alt="Newborn baby, eyes closed, stretching tiny hands"></div>
+        <div class="tl-birth-body"><div class="tl-week">Birth</div><h3>Welcome, little one</h3><p>Your journey continues into early motherhood &mdash; with the same care, now for two.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. ALLOBOT / AI INTELLIGENCE ============ -->
+<section class="section" id="ai-care">
+  <div class="container ai-grid">
+    <div>
+      <div class="section-head reveal" style="margin-bottom:36px">
+        <div class="eyebrow lav"><span class="dot"></span>AI Intelligence</div>
+        <h2 class="h2">AI that <em>understands</em> your journey.</h2>
+        <p class="lead">AlloMom turns your health and wellness data into simple, personalized insights that help you understand patterns and changes throughout motherhood.</p>
+      </div>
+      <div class="insight-list">
+        <div class="insight reveal"><div class="ico" style="background:var(--rose-soft)">&#128095;</div><div><div class="t">Health Insight</div><div class="d">Your activity has increased this week.</div></div></div>
+        <div class="insight reveal d1"><div class="ico" style="background:var(--lav-soft)">&#128164;</div><div><div class="t">Sleep Insight</div><div class="d">Your sleep duration improved by 42 minutes.</div></div></div>
+        <div class="insight reveal d2"><div class="ico" style="background:var(--peach-soft)">&#128522;</div><div><div class="t">Mood Insight</div><div class="d">Your wellbeing trend is positive.</div></div></div>
+        <div class="insight reveal d3"><div class="ico" style="background:var(--green-soft)">&#127793;</div><div><div class="t">Wellness Trend</div><div class="d">Your recovery is improving.</div></div></div>
+        <div class="insight reveal d4"><div class="ico" style="background:#E3F0FB">&#128161;</div><div><div class="t">Personalized Guidance</div><div class="d">Consider taking a short rest after your afternoon activity.</div></div></div>
+      </div>
+      <div class="disclaimer reveal d4">
+        <span class="ico">&#9432;</span>
+        <span><strong>A supportive companion, not a doctor.</strong> AlloMom&rsquo;s AI insights are informational and supportive. They are not a replacement for professional medical advice, diagnosis, or care. Always consult your healthcare provider about your pregnancy and health.</span>
+      </div>
+    </div>
+    <div class="ai-visual reveal d2">
+      <div class="ai-halo"></div>
+      <div class="phone">
+        <div class="phone-screen"><img src="assets/app-agents.png" alt="AlloMom specialized AI care agents including AlloCry, kick counter, feeding tracker and daily activity"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. ALLOWEAR INTEGRATION ============ -->
+<section class="section allowear" id="allowear">
+  <div class="container">
+    <div class="aw-grid">
+      <div>
+        <div class="section-head reveal" style="margin-bottom:0">
+          <div class="eyebrow"><span class="dot"></span>Connected Care</div>
+          <h2 class="h2">Your health.<br><em>Connected in real time.</em></h2>
+          <p class="lead">AlloWear works seamlessly with AlloMom to bring relevant wellness data into your maternal health journey &mdash; quietly, accurately, and always in your control.</p>
+        </div>
+        <div class="aw-features">
+          <div class="aw-feat reveal"><div class="t">Real-Time Sync</div><div class="d">Wellness data flows from AlloWear to AlloMom the moment it happens.</div></div>
+          <div class="aw-feat reveal d1"><div class="t">Smart Alerts</div><div class="d">Gentle nudges when your body may need rest, water, or a slower pace.</div></div>
+          <div class="aw-feat reveal d2"><div class="t">Health Insights</div><div class="d">Wearable trends become simple, readable insight cards in AlloMom.</div></div>
+          <div class="aw-feat reveal d3"><div class="t">Secure &amp; Private</div><div class="d">Your data stays encrypted and belongs to you &mdash; always.</div></div>
+        </div>
+        <div class="aw-metric-row reveal d2">
+          <div class="aw-metric"><div class="v">82</div><div class="l">Heart Rate</div></div>
+          <div class="aw-metric"><div class="v">Low</div><div class="l">Stress</div></div>
+          <div class="aw-metric"><div class="v">85%</div><div class="l">Recovery</div></div>
+          <div class="aw-metric"><div class="v">7h 30m</div><div class="l">Sleep</div></div>
+          <div class="aw-metric"><div class="v">6,842</div><div class="l">Steps</div></div>
+        </div>
+      </div>
+      <div class="aw-stage reveal d2">
+        <svg class="aw-link" viewBox="0 0 120 120" style="left:8%;top:50%;transform:translateY(-50%)">
+          <path d="M10 60 C 40 20, 80 20, 110 60"/>
+          <path d="M10 60 C 40 100, 80 100, 110 60"/>
+        </svg>
+        <div class="watch">
+          <div class="watch-face">
+            <span class="beat"></span>
+            <div class="hr">82</div>
+            <div class="lb">bpm &middot; resting</div>
+          </div>
+        </div>
+        <div class="aw-phone-wrap">
+          <div class="phone">
+            <div class="phone-screen"><img src="assets/app-home.png" alt="AlloMom dashboard synced with AlloWear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. DAILY HEALTH DASHBOARD ============ -->
+<section class="section dash">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span>Today</div>
+      <h2 class="h2">Your day, <em>at a glance.</em></h2>
+      <p class="lead">This is what a calm morning inside AlloMom looks like &mdash; everything that matters, nothing that doesn&rsquo;t.</p>
+    </div>
+    <div class="dash-grid">
+      <div class="dcard wide reveal">
+        <div class="top"><span class="lbl">Activity This Week</span><span class="trend-up">&#8593; 8% vs last week</span></div>
+        <div class="bars">
+          <div class="bar" style="--h:42%"><i></i><span class="d">M</span></div>
+          <div class="bar" style="--h:58%"><i></i><span class="d">T</span></div>
+          <div class="bar" style="--h:50%"><i></i><span class="d">W</span></div>
+          <div class="bar" style="--h:70%"><i></i><span class="d">T</span></div>
+          <div class="bar" style="--h:64%"><i></i><span class="d">F</span></div>
+          <div class="bar" style="--h:88%"><i></i><span class="d">S</span></div>
+          <div class="bar today" style="--h:76%"><i></i><span class="d">S</span></div>
+        </div>
+        <div class="sub" style="margin-top:16px">Most active time: late morning &middot; 6,842 steps so far today</div>
+      </div>
+      <div class="dcard tall reveal d1">
+        <div class="top"><span class="lbl">Wellness Score</span></div>
+        <div style="display:grid;place-items:center;padding:8px 0 4px">
+          <div class="ring" style="--rc:#E0648A;--p:92;width:130px;height:130px">
+            <svg viewBox="0 0 88 88"><circle class="bgc" cx="44" cy="44" r="38"/><circle class="fgc" cx="44" cy="44" r="38"/></svg>
+            <div class="pct" style="font-size:28px;font-family:var(--font-display)" data-count="92">0</div>
+          </div>
+        </div>
+        <div class="sub" style="text-align:center">Excellent &middot; your best week yet</div>
+      </div>
+      <div class="dcard reveal"><div class="top"><div class="ico" style="background:var(--rose-soft)">&#10084;&#65039;</div></div><div class="lbl">Heart Rate</div><div class="val">82 <small>bpm</small></div><div class="sub trend-up">Stable resting trend</div></div>
+      <div class="dcard reveal d1"><div class="top"><div class="ico" style="background:var(--lav-soft)">&#128164;</div></div><div class="lbl">Sleep</div><div class="val">7h 30m</div><div class="sub trend-up">&#8593; 42 min last night</div></div>
+      <div class="dcard reveal d2"><div class="top"><div class="ico" style="background:var(--green-soft)">&#128694;</div></div><div class="lbl">Activity</div><div class="val">6,842</div><div class="sub">Goal 68% complete</div></div>
+      <div class="dcard reveal d3"><div class="top"><div class="ico" style="background:#E3F0FB">&#128167;</div></div><div class="lbl">Water</div><div class="val">1.8 <small>L</small></div><div class="sub">82% of daily goal</div></div>
+      <div class="dcard reveal d4"><div class="top"><div class="ico" style="background:var(--peach-soft)">&#129496;</div></div><div class="lbl">Stress</div><div class="val">Low</div><div class="sub trend-up">Recovery 85%</div></div>
+      <div class="dcard reveal d5"><div class="top"><div class="ico" style="background:#FBE4EB">&#129382;</div></div><div class="lbl">Nutrition</div><div class="val">Good</div><div class="sub">Balanced meals logged</div></div>
+    </div>
+    <p class="dash-note reveal">Illustrative dashboard &mdash; AlloMom personalizes every metric to your own journey and wearable data.</p>
+  </div>
+</section>
+
+<!-- ============ 8. AI MATERNAL ASSISTANT ============ -->
+<section class="section">
+  <div class="container chat-grid">
+    <div>
+      <div class="section-head reveal" style="margin-bottom:0">
+        <div class="eyebrow lav"><span class="dot"></span>Your AI Companion</div>
+        <h2 class="h2">Questions about your journey? <em>Just ask.</em></h2>
+        <p class="lead">AlloMom&rsquo;s assistant understands your wellness data and answers in plain, reassuring language &mdash; day or night.</p>
+      </div>
+      <div class="q-list">
+        <button class="q-item reveal" data-q="How has my sleep changed this month?">How has my sleep changed this month?<span class="arrow">&#8594;</span></button>
+        <button class="q-item reveal d1" data-q="How am I doing this week?">How am I doing this week?<span class="arrow">&#8594;</span></button>
+        <button class="q-item reveal d2" data-q="What should I discuss with my doctor?">What should I discuss with my doctor?<span class="arrow">&#8594;</span></button>
+        <button class="q-item reveal d3" data-q="Show me my wellness trends.">Show me my wellness trends.<span class="arrow">&#8594;</span></button>
+        <button class="q-item reveal d4" data-q="How has my activity changed?">How has my activity changed?<span class="arrow">&#8594;</span></button>
+        <button class="q-item reveal d5" data-q="What changed in my health this week?">What changed in my health this week?<span class="arrow">&#8594;</span></button>
+      </div>
+    </div>
+    <div class="chat-window reveal d2">
+      <div class="chat-head">
+        <div class="chat-avatar">&#129504;</div>
+        <div><div class="n">AlloMom Assistant</div><div class="s">Online &middot; understands your wellness data</div></div>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="msg user">Why have I been feeling more tired this week?</div>
+        <div class="msg ai">Your recent sleep duration appears slightly lower than your usual pattern. You may want to prioritize rest and hydration. If your fatigue feels unusual, severe, or concerning, consider speaking with your healthcare provider.</div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Ask about your journey..." aria-label="Ask AlloMom">
+        <button class="chat-send" id="chatSend" aria-label="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="disclaimer reveal" style="max-width:760px;margin:44px auto 0">
+      <span class="ico">&#9432;</span>
+      <span><strong>Informational support only.</strong> AlloMom&rsquo;s assistant provides general wellness information based on your data. It does not diagnose medical conditions or replace advice from your doctor, midwife, or healthcare provider.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. EMOTIONAL WELLBEING ============ -->
+<section class="section" style="padding-top:40px">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span>Emotional Wellbeing</div>
+      <h2 class="h2">Because motherhood is <em>more than numbers.</em></h2>
+      <p class="lead">How you feel matters as much as what your wearable shows. AlloMom makes room for the emotional side of your journey, every day.</p>
+    </div>
+    <div class="emo-grid">
+      <div class="ecard reveal"><div class="ico" style="background:var(--rose-soft)">&#128522;</div><h3>Mood</h3><p>Track how you&rsquo;re feeling with a gentle daily check-in.</p></div>
+      <div class="ecard reveal d1"><div class="ico" style="background:var(--lav-soft)">&#127807;</div><h3>Stress</h3><p>Understand stress patterns before they build up.</p></div>
+      <div class="ecard reveal d2"><div class="ico" style="background:var(--peach-soft)">&#9889;</div><h3>Energy</h3><p>See how your energy rises and falls across the week.</p></div>
+      <div class="ecard reveal d3"><div class="ico" style="background:#E3F0FB">&#128221;</div><h3>Journal</h3><p>Capture thoughts, moments, and memories in your own words.</p></div>
+      <div class="ecard reveal d4"><div class="ico" style="background:var(--green-soft)">&#129496;</div><h3>Mindful Moments</h3><p>Gentle breathing and relaxation experiences for restless days.</p></div>
+    </div>
+    <div class="breath reveal d2">
+      <div class="breath-circle">breathe</div>
+      <div class="bt">
+        <h3>A moment just for you</h3>
+        <p>When the day feels heavy, AlloMom offers short guided breathing and relaxation sessions &mdash; soft visuals, no noise, no pressure. Just a quiet minute that belongs to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. CONNECT WITH YOUR PARTNER ============ -->
+<section class="section" id="families" style="padding-top:40px">
+  <div class="container partner-grid">
+    <div class="partner-visual reveal">
+      <img src="assets/couple.png" alt="Expecting couple sharing a warm moment at home">
+      <div class="pv-chip pv-chip-1">&#128140; Week 24 update shared</div>
+      <div class="pv-chip pv-chip-2">&#128118; Baby kicked &mdash; 10 counts today</div>
+    </div>
+    <div>
+      <div class="section-head reveal" style="margin-bottom:0">
+        <div class="eyebrow green"><span class="dot"></span>For Families</div>
+        <h2 class="h2">Motherhood is a journey <em>shared together.</em></h2>
+        <p class="lead">Partners can stay connected to the journey &mdash; when, and only when, you choose to share. AlloMom keeps you both close to every milestone.</p>
+      </div>
+      <div class="feat-cols reveal d1">
+        <div class="feat-item"><span class="ck">&#10003;</span>Shared pregnancy journey</div>
+        <div class="feat-item"><span class="ck">&#10003;</span>Important updates &amp; milestones</div>
+        <div class="feat-item"><span class="ck">&#10003;</span>Wellness information you approve</div>
+        <div class="feat-item"><span class="ck">&#10003;</span>Baby moments &amp; kick counts</div>
+        <div class="feat-item"><span class="ck">&#10003;</span>Appointment reminders for two</div>
+        <div class="feat-item"><span class="ck">&#10003;</span>Support and connection, daily</div>
+      </div>
+      <div class="privacy-note reveal d2">
+        <span style="font-size:18px">&#128737;&#65039;</span>
+        <span><strong>You&rsquo;re in control.</strong> Nothing is visible to your partner unless you explicitly choose to share it. Every sharing setting can be changed at any time, and turned off completely.</span>
+      </div>
+      <div class="pv-phones reveal d3">
+        <div class="phone"><div class="phone-screen"><img src="assets/app-talk.png" alt="AlloMom Talk2Baby companion screen"></div></div>
+        <div class="phone"><div class="phone-screen"><img src="assets/app-home.png" alt="AlloMom daily overview on partner view"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. HEALTH RECORDS ============ -->
+<section class="section records">
+  <div class="container rec-grid">
+    <div>
+      <div class="section-head reveal" style="margin-bottom:0">
+        <div class="eyebrow"><span class="dot"></span>Your Health, Organized</div>
+        <h2 class="h2">Everything important, <em>in one place.</em></h2>
+        <p class="lead">Appointments, reports, labs, milestones, and personal notes &mdash; organized into a single, calm health timeline you can actually use.</p>
+      </div>
+      <div class="rec-stats reveal d1">
+        <div class="rec-stat"><div class="v">128+</div><div class="l">Entries in your timeline</div></div>
+        <div class="rec-stat"><div class="v">100%</div><div class="l">Under your control</div></div>
+        <div class="rec-stat"><div class="v">2 min</div><div class="l">To add a visit summary</div></div>
+        <div class="rec-stat"><div class="v">1 tap</div><div class="l">To share with your doctor</div></div>
+      </div>
+    </div>
+    <div class="timeline-ui reveal d2">
+      <div class="rec-item" style="--dc:#E0648A"><div class="d">Appointment &middot; Oct 2</div><div class="t">Routine prenatal checkup</div><div class="s">Week 24 visit &middot; blood pressure and growth check &middot; reminder sent to you and your partner</div></div>
+      <div class="rec-item" style="--dc:#8F76C9"><div class="d">Report &middot; Sep 28</div><div class="t">Anatomy scan report uploaded</div><div class="s">Stored securely in your records &middot; summary view available for your next visit</div></div>
+      <div class="rec-item" style="--dc:#DE8F4E"><div class="d">Lab &middot; Sep 21</div><div class="t">Glucose screening results</div><div class="s">Within expected range &middot; trend added to your wellness history</div></div>
+      <div class="rec-item" style="--dc:#4E8A5C"><div class="d">Milestone &middot; Sep 18</div><div class="t">First kick counting session</div><div class="s">10 movements in 28 minutes &middot; shared with your partner</div></div>
+      <div class="rec-item" style="--dc:#3E8FBF"><div class="d">Wellness &middot; Sep 15</div><div class="t">Sleep trend improving</div><div class="s">Average up 42 minutes over two weeks &middot; noted in your wellness history</div></div>
+      <div class="rec-item" style="--dc:#B4A0E0"><div class="d">Personal note &middot; Sep 12</div><div class="t">&ldquo;Felt baby hiccups for the first time&rdquo;</div><div class="s">Private journal entry &middot; visible only to you</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. PERSONALIZED INSIGHTS ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow lav"><span class="dot"></span>Personalized Insights</div>
+      <h2 class="h2">Your journey is unique.<br><em>Your insights should be too.</em></h2>
+    </div>
+    <div class="insight-grid">
+      <div class="big-card bc-1 reveal"><div class="glow"></div><div class="ico">&#128302;</div><h3>Smart Predictions</h3><p>Understand patterns in your wellness data &mdash; like when your energy usually dips &mdash; so you can plan gentler days ahead.</p></div>
+      <div class="big-card bc-2 reveal d1"><div class="glow"></div><div class="ico">&#129504;</div><h3>Personalized Insights</h3><p>Every insight is based on your own trends and history &mdash; not generic averages, not someone else&rsquo;s &ldquo;normal.&rdquo;</p></div>
+      <div class="big-card bc-3 reveal d2"><div class="glow"></div><div class="ico">&#128200;</div><h3>Wellness Trends</h3><p>See how your sleep, stress, movement, and recovery change over weeks and months &mdash; in charts you can actually read.</p></div>
+      <div class="big-card bc-4 reveal d3"><div class="glow"></div><div class="ico">&#127775;</div><h3>Trusted Guidance</h3><p>Simple, evidence-informed information to help you prepare better questions and make more confident decisions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. SECURITY & PRIVACY ============ -->
+<section class="section" style="padding-top:40px">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow green"><span class="dot"></span>Private by Design</div>
+      <h2 class="h2">Your health <em>belongs to you.</em></h2>
+      <p class="lead">AlloMom is designed with privacy and security at its core. Your health information should remain protected and under your control.</p>
+    </div>
+    <div class="privacy-grid">
+      <div class="pcard reveal"><div class="pico" style="background:var(--lav-soft)">&#128274;</div><h3>Secure</h3><p>Your information is protected with encryption in transit and at rest, across every device you use.</p></div>
+      <div class="pcard reveal d1"><div class="pico" style="background:var(--rose-soft)">&#128737;&#65039;</div><h3>Private</h3><p>You control what you share, with whom, and when. Nothing is ever shared without your explicit choice.</p></div>
+      <div class="pcard reveal d2"><div class="pico" style="background:var(--green-soft)">&#10003;</div><h3>Trusted</h3><p>Designed for responsible maternal health technology &mdash; transparent, respectful, and built to earn your trust.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. APP DOWNLOAD CTA ============ -->
+<section class="section" id="download" style="padding-bottom:0">
+  <div class="cta-panel">
+    <div class="cta-blob cta-blob-1"></div>
+    <div class="cta-blob cta-blob-2"></div>
+    <div class="container cta-inner">
+      <div class="reveal">
+        <h2>Take care of <em>you,</em> too.</h2>
+        <p class="lead">From your first pregnancy milestone to the everyday moments of motherhood, AlloMom is here to help you understand your journey &mdash; calmly, clearly, and on your own terms.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-dark">Download AlloMom
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+          <a href="#features" class="btn btn-ghost">Explore AlloMom</a>
+        </div>
+      </div>
+      <div class="cta-visual reveal d2">
+        <div class="cta-ring"></div>
+        <div class="phone">
+          <div class="phone-screen"><img src="assets/mother-phone.png" alt="Mother checking her baby's weekly development in AlloMom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">AlloMom<span class="heart">&#10084;</span></div>
+        <p class="foot-desc">Technology that cares, quietly. Where thoughtful design meets compassionate maternal support.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">AlloMom</a></li>
+          <li><a href="#">AlloWear</a></li>
+          <li><a href="#">AlloBaby</a></li>
+          <li><a href="#">AlloDoc</a></li>
+          <li><a href="#">AlloLab</a></li>
+          <li><a href="#">AlloGate</a></li>
+          <li><a href="#">AlloKonnect</a></li>
+          <li><a href="#">SaveMom Nurse</a></li>
+          <li><a href="#">AlloBoT</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="newsletter">
+        <h4>Stay connected to better maternal health.</h4>
+        <p>Join mothers receiving curated insights on maternal wellness and technology.</p>
+        <form class="nl-form" id="nlForm">
+          <input type="email" placeholder="Your email address" aria-label="Email address" required>
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+        <div class="nl-msg" id="nlMsg"></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 SaveMom. All rights reserved.</span>
+      <span>Made with care for mothers and babies <span class="heart">&#10084;</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ LOGIN MODAL ============ -->
+<div class="modal-bg" id="loginModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h3>Welcome back</h3>
+    <p class="sub">Sign in to continue your motherhood journey.</p>
+    <form onsubmit="event.preventDefault();closeModal();">
+      <label for="lemail">Email</label>
+      <input type="email" id="lemail" placeholder="you@example.com" required>
+      <label for="lpass">Password</label>
+      <input type="password" id="lpass" placeholder="Your password" required>
+      <button type="submit" class="btn btn-primary">Log in</button>
+    </form>
+    <div class="alt">New to AlloMom? <a href="#">Create your account</a></div>
+  </div>
+</div>
+
+<script>
+/* ===== Navbar scroll state + progress bar ===== */
+const nav=document.getElementById('nav'),prog=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>30);
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  prog.style.width=(window.scrollY/h*100)+'%';
+},{passive:true});
+
+/* ===== Mobile menu ===== */
+const ham=document.getElementById('hamburger'),mm=document.getElementById('mobileMenu');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mm.classList.toggle('open');});
+mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mm.classList.remove('open');}));
+
+/* ===== Reveal on scroll ===== */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===== Animated counters ===== */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target;cio.unobserve(el);
+  const target=parseFloat(el.dataset.count),dec=parseInt(el.dataset.decimal||0),suf=el.dataset.suffix||'';
+  const t0=performance.now(),dur=1600;
+  (function tick(t){
+    const p=Math.min((t-t0)/dur,1),ease=1-Math.pow(1-p,3),v=target*ease;
+    el.textContent=(dec?v.toFixed(dec):Math.round(v).toLocaleString())+suf;
+    if(p<1)requestAnimationFrame(tick);
+  })(t0);
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+/* ===== Login modal ===== */
+const modal=document.getElementById('loginModal');
+function openModal(){modal.classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){modal.classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ===== Newsletter ===== */
+document.getElementById('nlForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  document.getElementById('nlMsg').textContent='Thank you — you\u2019re on the list for gentle, useful insights.';
+  e.target.reset();
+});
+
+/* ===== AI Chat ===== */
+const chatBody=document.getElementById('chatBody'),chatInput=document.getElementById('chatInput'),chatSend=document.getElementById('chatSend');
+const answers={
+ "how has my sleep changed this month?":"This month, your average sleep is 7h 12m \u2014 about 24 minutes more than last month. Your deep sleep has improved on rest days, and a consistent bedtime seems to help most.",
+ "how am i doing this week?":"This week looks steady: activity is up 8%, sleep is near your usual range, and stress has stayed low. Your wellness score is 92 \u2014 a strong week overall.",
+ "what should i discuss with my doctor?":"Based on your recent logs, you may want to mention your afternoon energy dips, last week\u2019s sleep changes, and your hydration average of 1.8 L. AlloMom can compile these into a simple visit summary.",
+ "show me my wellness trends.":"Over the last 8 weeks your recovery trend is improving (+11%), resting heart rate is stable, and sleep quality is trending upward. Activity is slightly below your 4-week average this week.",
+ "how has my activity changed?":"Your activity is up 8% this week \u2014 averaging 6,842 steps. Your movement goal is 68% complete today, and your most active time remains late morning.",
+ "what changed in my health this week?":"A few things changed this week: sleep improved by 42 minutes per night, afternoon stress dipped on Tuesday and Thursday, and hydration stayed consistently above 80%."
+};
+const fallback="Thanks for asking. Based on your recent data, everything looks broadly steady \u2014 but I\u2019d recommend chatting with your healthcare provider for anything specific or concerning. You can also ask me about your sleep, activity, stress, or wellness trends.";
+function scrollChat(){chatBody.scrollTop=chatBody.scrollHeight;}
+function ask(q){
+  q=q.trim();if(!q)return;
+  const u=document.createElement('div');u.className='msg user';u.textContent=q;chatBody.appendChild(u);scrollChat();
+  const t=document.createElement('div');t.className='msg ai typing';t.innerHTML='<i></i><i></i><i></i>';
+  setTimeout(()=>{chatBody.appendChild(t);scrollChat();},350);
+  setTimeout(()=>{
+    t.classList.remove('typing');
+    t.textContent=answers[q.toLowerCase()]||fallback;
+    scrollChat();
+  },1500);
+}
+document.querySelectorAll('.q-item').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.q)));
+function sendFromInput(){ask(chatInput.value);chatInput.value='';}
+chatSend.addEventListener('click',sendFromInput);
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendFromInput();});
+</script>
+</body>
+</html>
